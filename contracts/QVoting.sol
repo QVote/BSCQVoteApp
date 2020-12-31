@@ -1,7 +1,9 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
-import "github.com/OpenZeppelin/zeppelin-solidity/contracts/access/Ownable.sol";
-import "github.com/OpenZeppelin/zeppelin-solidity/contracts/math/SafeMath.sol";
+pragma solidity >=0.6.0 <0.8.0;
+
+import "./Ownable.sol";
+import "./SafeMath.sol";
 
 /*
 I fought far too long for this.
