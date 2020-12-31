@@ -1,5 +1,6 @@
 # hi
 
+to deploy
  ```bash
 truffle migrate --network testnet
  ```
