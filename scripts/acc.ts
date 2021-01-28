@@ -18,5 +18,4 @@ export const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-se
 const signer = new ethers.Wallet(privKey, bscProvider);
 
 console.log(signer.address)
-
 export { signer };
