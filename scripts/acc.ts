@@ -12,7 +12,7 @@ try {
     fs.writeFileSync(accPath, wallet.mnemonic.phrase);
 }
 
-const accFile = fs.readFileSync(accPath, 'utf8');
+const accFile = fs.readFileSync(accPath, 'utf8').toString().trim();;
 const wallet = ethers.Wallet.fromMnemonic(accFile);
 
 console.log(wallet);
