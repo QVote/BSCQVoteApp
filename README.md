@@ -1,4 +1,4 @@
-# hi
+# QVoteBSC :eyes:
 
 to deploy
  ```bash
@@ -8,8 +8,8 @@ truffle migrate --network testnet
 to get instance of contract
   ```bash
 truffle console --network testnet
-let instance = await QVoting.deployed()
-let accounts = await web3.eth.getAccounts()
+const instance = await QVoting.deployed()
+const accounts = await web3.eth.getAccounts()
  ```
 
 mint account
