@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import * as fs from 'fs';
 
-const accPath = `${__dirname}/acc.mnemonic`;
+const accPath = `${__dirname}/.privKey`;
 
 try {
     fs.readFileSync(accPath, 'utf8');
@@ -9,12 +9,14 @@ try {
 } catch (e) {
     console.log("The account does not exist, creating new one...");
     const wallet = ethers.Wallet.createRandom();
-    fs.writeFileSync(accPath, wallet.mnemonic.phrase);
+    fs.writeFileSync(accPath, wallet.privateKey);
 }
 
-const mnemonic = fs.readFileSync(accPath, 'utf8').toString().trim();;
-const wallet = ethers.Wallet.fromMnemonic(mnemonic);
+const privKey = fs.readFileSync(accPath, 'utf8').toString().trim();;
 
-console.log(wallet);
+export const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-seed-prebsc-1-s1.binance.org:8545`);
+const signer = new ethers.Wallet(privKey, bscProvider);
 
-export { accPath, mnemonic }
+console.log(signer.address)
+
+export { signer };
