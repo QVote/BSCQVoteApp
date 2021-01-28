@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "@truffle/hdwallet-provider": "^1.2.1"
+    "@truffle/hdwallet-provider": "^1.2.1",
+    "ethers": "^5.0.26"
+  },
+  "devDependencies": {
+    "ts-node": "^9.1.1"
   }
 }
