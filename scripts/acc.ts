@@ -12,9 +12,9 @@ try {
     fs.writeFileSync(accPath, wallet.mnemonic.phrase);
 }
 
-const accFile = fs.readFileSync(accPath, 'utf8').toString().trim();;
-const wallet = ethers.Wallet.fromMnemonic(accFile);
+const mnemonic = fs.readFileSync(accPath, 'utf8').toString().trim();;
+const wallet = ethers.Wallet.fromMnemonic(mnemonic);
 
 console.log(wallet);
 
-export { accPath, accFile }
+export { accPath, mnemonic }
