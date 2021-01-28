@@ -14,8 +14,8 @@ try {
 
 const privKey = fs.readFileSync(accPath, 'utf8').toString().trim();;
 
-export const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-seed-prebsc-1-s1.binance.org:8545`);
+const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-seed-prebsc-1-s1.binance.org:8545`);
 const signer = new ethers.Wallet(privKey, bscProvider);
 
-console.log(signer.address)
-export { signer };
+console.log(signer)
+export { signer, bscProvider };
