@@ -73,9 +73,11 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
     async function onDeploy() {
         if (!loading && decisionValid) {
             try {
-
+                setLoading(true);
+                // do blockchain stuff
+                setLoading(false);
             } catch (e) {
-
+                setLoading(false);
             }
         }
     }
