@@ -4,16 +4,20 @@ import { ethers, Contract, Wallet, ContractFactory} from 'ethers'
 import * as truffleConfig from '../truffle-config';
 
 
-const memo ="become reflect flag betray toast panda robot draft carbon select term electric"
-const wallet = Wallet.fromMnemonic(memo);
+// owner 
+// const memo = "become reflect flag betray toast panda robot draft carbon select term electric"
+// const wallet = Wallet.fromMnemonic(memo);
+
+
+const voterWallet = Wallet.createRandom();  // voter 
 
 const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-seed-prebsc-1-s1.binance.org:8545`);
-const signer = new Wallet(wallet.privateKey, bscProvider)
+const voterSigner = new Wallet(voterWallet.privateKey, bscProvider)
 
 
 async function getElection(electionAddress: string, voterAddress: string){
 	try {
-		const electionContract = new ethers.Contract(electionAddress, abi, signer); 
+		const electionContract = new ethers.Contract(electionAddress, abi, voterSigner); 
 		const balance : number = await electionContract.getBalanceOf(voterAddress); 
 
 		if (balance > 0) {
@@ -41,8 +45,11 @@ async function vote(electionAddress: string, voterAddress : string, options : st
 	}
 }
 
-// get election
-// check if owner has credits 
-// 
-// 
-
+async function getElectionData(electionContract: any, voterAddress: string) {
+	try {
+		const electionInfo : any = await electionContract.getVotingInfo(voterAddress); 
+		console.log(electionInfo)  
+	} catch (e) {
+		console.log(e); 
+	}
+}
