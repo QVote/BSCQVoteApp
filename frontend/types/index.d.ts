@@ -4,16 +4,19 @@ export module QVBSC {
         uid: string,
     }
 
-    export type VotingOption = {
+    export type SliderState = {
+        max: number,
+        min: number,
+        cur: number | string,
         optName: string,
         uid: string,
-        credits: number
     }
 
     export type VotingDecision = {
         name: string,
+        creditsRemaining: number,
         description: string,
-        options: VotingOption[],
+        options: SliderState[],
         endTime: number,
         credits: number
     }
