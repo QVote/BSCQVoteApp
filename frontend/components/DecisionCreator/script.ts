@@ -1,6 +1,6 @@
 import { QVBSC } from "../../types";
 
-export function decisionValidate(createDS: QVBSC.Decision) {
+function decisionValidate(createDS: QVBSC.Decision) {
     if (!checkName()) {
         return false;
     } else if (!checkDesc()) {
@@ -28,3 +28,23 @@ export function decisionValidate(createDS: QVBSC.Decision) {
         }
     }
 }
+
+function addMinutes(passToConstructor: any, m: number) {
+    const res = new Date(passToConstructor);
+    res.setTime(res.getTime() + m * 60 * 1000);
+    return res;
+}
+
+
+function getInitDecision(): QVBSC.Decision {
+    const end = addMinutes(new Date(Date.now()), 10);
+    return {
+        name: "",
+        description: "",
+        options: [],
+        endTime: end.getTime()
+    }
+}
+
+
+export { addMinutes, decisionValidate, getInitDecision }
