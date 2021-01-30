@@ -4,20 +4,28 @@ import { Box, TextInput, TextArea, Button, Keyboard, Stack } from 'grommet';
 import { DecisionPreview } from './DecisionPreview';
 import { v4 as uuidv4 } from 'uuid';
 import { DateTimeDrop } from '../DateTimeDrop'
+import { decisionValidate } from './script'
 
 export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision }) {
     const [decision, setDecision] = useState(initDecision);
     const [isAddOption, setIsAddOption] = useState(false);
     const [tempOption, setTempOption] = useState("");
+    const [decisionValid, setDecisionValid] = useState(decisionValidate(initDecision))
+    const [loading, setLoading] = useState(false);
 
     const canAddOption = () => tempOption != "";
 
+    function updateDecision(d: QVBSC.Decision) {
+        setDecision(d);
+        setDecisionValid(decisionValidate(d));
+    }
+
     function onChangeName(n: string) {
-        setDecision({ ...decision, name: n })
+        updateDecision({ ...decision, name: n })
     }
 
     function onChangeDescription(d: string) {
-        setDecision({ ...decision, description: d })
+        updateDecision({ ...decision, description: d })
     }
 
     function onAddNewOption() {
@@ -26,7 +34,7 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
                 optName: tempOption,
                 uid: uuidv4()
             }
-            setDecision({ ...decision, options: [...decision.options, toAdd] })
+            updateDecision({ ...decision, options: [...decision.options, toAdd] })
             setTempOption("");
         }
 
@@ -54,22 +62,39 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
     }
 
     function onChangeEndTime(time: number) {
-        setDecision({ ...decision, endTime: time });
+        updateDecision({ ...decision, endTime: time });
+    }
+
+    function onDeleteOption(o: QVBSC.Option) {
+        const newOptions = decision.options.filter(x => x.uid != o.uid);
+        updateDecision({ ...decision, options: newOptions })
+    }
+
+    async function onDeploy() {
+        if (!loading && decisionValid) {
+            try {
+
+            } catch (e) {
+
+            }
+        }
     }
 
     return (
         <Box fill direction="row" gap="large">
-            <DecisionPreview d={decision} />
+            <DecisionPreview d={decision} onDeleteOption={onDeleteOption} />
             <Box flex elevation="small" round="small" pad="medium" gap="small">
                 <TextInput
                     placeholder="Name"
                     value={decision.name}
+                    maxLength={100}
                     onChange={(e) => onChangeName(e.target.value)}
                 />
                 <TextArea
                     placeholder="Details"
                     value={decision.description}
                     resize="vertical"
+                    maxLength={100}
                     onChange={(e) => onChangeDescription(e.target.value)}
                 />
                 <DateTimeDrop
@@ -81,12 +106,12 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
                     <Box align="start">
                         {
                             isAddOption ?
-                                <Box>
-
+                                <Box fill gap="small">
                                     <TextInput
                                         placeholder="Option Name"
                                         value={tempOption}
                                         onChange={(e) => setTempOption(e.target.value)}
+                                        maxLength={100}
                                     />
                                     <Box align="start">
                                         <Button disabled={!canAddOption()} label={"Confirm"} onClick={onAddNewOption} />
@@ -97,6 +122,10 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
                         }
                     </Box>
                 </Keyboard>
+                <Box align="start">
+                    <Button
+                        disabled={loading || !decisionValid} label={"Deploy"} onClick={onDeploy} />
+                </Box>
             </Box>
         </Box>
     )

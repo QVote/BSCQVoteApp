@@ -1,5 +1,6 @@
 import { QVBSC } from "../../types";
-import { Text, Box } from 'grommet'
+import { Text, Box, Button } from 'grommet'
+import { Trash } from 'grommet-icons'
 
 function formatMilisecondsToDateString(milis: number) {
     return new Date(milis).toLocaleString();
@@ -14,7 +15,8 @@ function Disp({ t, toDisp }: { t: string, toDisp: string }) {
     )
 }
 
-export function DecisionPreview({ d }: { d: QVBSC.Decision }) {
+export function DecisionPreview({ d, onDeleteOption }:
+    { d: QVBSC.Decision, onDeleteOption: (o: QVBSC.Option) => void }) {
     return (
         <Box flex elevation="small" round="small" pad="medium" gap="small">
             <Disp t={"Name:"} toDisp={d.name} />
@@ -28,9 +30,18 @@ export function DecisionPreview({ d }: { d: QVBSC.Decision }) {
                 {
                     d.options.map((o) => {
                         return (
-                            <Text key={o.uid}>
-                                {o.optName}
-                            </Text>
+                            <Box
+                                key={o.uid}
+                                direction="row"
+                                align="center"
+                                justify="between"
+                                height={{ min: "xsmall" }}
+                            >
+                                <Text wordBreak="break-all">
+                                    {o.optName}
+                                </Text>
+                                <Button icon={<Trash />} onClick={() => onDeleteOption(o)} />
+                            </Box>
                         )
                     })
                 }
