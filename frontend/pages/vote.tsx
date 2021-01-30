@@ -1,7 +1,7 @@
-import { Text } from 'grommet'
+import { DecisionVoter } from '../components/DecisionVoter';
 
 export default function Vote() {
     return (
-        <Text>{"Vote"}</Text>
+        <DecisionVoter />
     )
 }
