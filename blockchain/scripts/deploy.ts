@@ -4,9 +4,10 @@ import { ethers, Contract, Wallet, ContractFactory} from 'ethers'
 import * as truffleConfig from '../truffle-config';
 
 
-const wallet = Wallet.createRandom({});
+const memo ="become reflect flag betray toast panda robot draft carbon select term electric"
+const wallet = Wallet.fromMnemonic(memo); 
 
-const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-seed-prebsc-1-s1.binance.o  rg:8545`);
+const bscProvider = new ethers.providers.JsonRpcProvider(`https://data-seed-prebsc-1-s1.binance.org:8545`);
 const signer = new Wallet(wallet.privateKey, bscProvider)
 
 
