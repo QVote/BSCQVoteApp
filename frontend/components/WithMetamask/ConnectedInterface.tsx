@@ -11,7 +11,7 @@ export const ConnectedInterface = ({ accounts, eth, children }:
     }) => {
 
     return (
-        <Box gap="small" align="center">
+        <Box fill gap="small" align="center">
             <Text>{accounts}</Text>
             <Context accounts={accounts} eth={eth}>
                 {children}

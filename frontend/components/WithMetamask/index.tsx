@@ -7,7 +7,7 @@ export function WithMetamask({ children }: { children: React.ReactNode }) {
     const { loadingProvider, thereIsAProvider, eth } = useEth();
 
     return (
-        <Box align="center" fill pad="large" gap="small">
+        <Box align="center" fill pad="medium" gap="small">
             <Heading margin="none">{"QVote on Binance Smart Chain"}</Heading>
             {
                 thereIsAProvider && !loadingProvider ?
