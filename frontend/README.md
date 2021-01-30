@@ -1,0 +1,1 @@
+# QVoteBSC frontend :zap:
