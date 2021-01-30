@@ -1,0 +1,1 @@
+# QVoteBSC monorepo :zap:
