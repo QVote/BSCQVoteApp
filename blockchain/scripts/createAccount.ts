@@ -1,7 +1,7 @@
 import { ethers, Wallet } from 'ethers';
 import * as fs from 'fs';
 
-const wallet = Wallet.createRandom();  
+const wallet = Wallet.createRandom();
 
 console.log("ADDRESS")
 console.log(wallet.address)
