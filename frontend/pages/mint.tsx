@@ -41,7 +41,7 @@ export default function Mint() {
     }
 
     return (
-        <Box align="center" width={{ min: "medium" }} gap="small">
+        <Box align="center" width={{min:"530px"}} gap="small" >
             <TextInput
                 icon={isAddress ? <Checkmark /> : <Close />}
                 placeholder="Voter address"

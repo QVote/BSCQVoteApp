@@ -1,14 +1,19 @@
-import { Heading, Box, Image } from 'grommet';
+import { Heading, Box, Anchor } from 'grommet';
 import { useEth } from '../../hooks/useEth'
 import { ConnectToWallet } from './ConnectToWallet';
 import _config from '../../config';
+import { useRouter } from 'next/router'
 
 export function WithMetamask({ children }: { children: React.ReactNode }) {
     const { loadingProvider, thereIsAProvider, eth } = useEth();
+    const router = useRouter();
 
     return (
-        <Box align="center" fill pad="medium" gap="small">
-            <Heading margin="none">{"QVote on Binance Smart Chain"}</Heading>
+        <Box align="center" fill pad="medium" gap="medium">
+            <Box onClick={() => router.push('/')}>
+                <Heading margin="none">{"QVote"}</Heading>
+            </Box>
+
             {
                 thereIsAProvider && !loadingProvider ?
                     <ConnectToWallet eth={eth} children={children} />

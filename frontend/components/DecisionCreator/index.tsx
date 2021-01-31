@@ -118,7 +118,7 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
         !isDeploying ?
             <Box fill direction="row" gap="large">
                 <DecisionPreview d={decision} onDeleteOption={onDeleteOption} />
-                <Box flex elevation="small" round="small" pad="medium" gap="small">
+                <Box flex  round="small" pad="medium" gap="small">
                     <TextInput
                         placeholder="Name"
                         value={decision.name}

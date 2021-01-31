@@ -19,7 +19,7 @@ export function DecisionPreview({ d, r, onDeleteOption, onClickOption }:
     { d?: QVBSC.Decision, r?: QVBSC.ResultDecision, onDeleteOption?: (o: QVBSC.Option) => void, onClickOption?: (o: QVBSC.Option) => any }) {
     const dec = d ? d : r;
     return (
-        <Box flex elevation="small" round="small" pad="medium" gap="small">
+        <Box flex round="small" pad="medium" gap="small">
             <Box gap="small" height={{ min: "160px" }}>
                 <Disp t={"Name:"} toDisp={dec.name} />
                 <Disp t={"Details:"} toDisp={dec.description} />
@@ -29,7 +29,7 @@ export function DecisionPreview({ d, r, onDeleteOption, onClickOption }:
                     <Text weight="bold">{`Options:`}</Text>
                 }
             </Box>
-            <Box overflow={{ vertical: "auto" }} height={{ max: "large" }} elevation={dec.options.length == 0 ? "none" : "small"} pad="medium" round="small">
+            <Box overflow={{ vertical: "auto" }} height={{ max: "large" }} elevation={dec.options.length == 0 ? "none" : "xsmall"} pad="medium" >
                 {
                     dec.options.map((o) => {
                         return (

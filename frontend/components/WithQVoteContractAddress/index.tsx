@@ -5,7 +5,7 @@ import { Checkmark, Close } from 'grommet-icons';
 export function WithQVoteContractAddress({ qvoteAddress, onUpdateAddress, isAddress}) {
 
     return (
-        <Box align="center" width={{min:"medium"}}>
+        <Box align="center" width={{min:"530px"}}>
             <TextInput
                 icon={isAddress ? <Checkmark /> : <Close />}
                 placeholder="QVote contract address"
