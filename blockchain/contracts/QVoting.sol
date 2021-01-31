@@ -114,14 +114,11 @@ contract QVoting is Ownable {
         return _balances[voterAddress];
     }
 
-	function getVotingInfo(address voterAddress) 
+	function getVotingInfo() 
 		public 
 		view 
 		returns(string memory, string memory, bytes32[] memory)
 	{
-		require(
-			_balances[voterAddress] > 0
-        );
 		return (company, name, optionTitles); 
 	}
 
