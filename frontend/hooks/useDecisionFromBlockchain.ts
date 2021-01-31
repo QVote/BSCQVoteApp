@@ -6,6 +6,7 @@ import { unConcatStrings, uniqStringToString, getNumberFromBigNum } from '../scr
 
 export const useDecisionFromBlockchain = (qvAddress: string, isAddress: boolean, eth: any, voterAddress: string, setDecision: (a: QVBSC.VotingDecision) => any) => {
     const [loading, setLoading] = useState(false);
+    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         if (isAddress) {
@@ -28,6 +29,7 @@ export const useDecisionFromBlockchain = (qvAddress: string, isAddress: boolean,
             }
             setLoading(false);
         }
+        setChecked(true);
     }
 
     function processRes(r: [string, string, string[]], cre: ethers.BigNumber) {
@@ -54,5 +56,5 @@ export const useDecisionFromBlockchain = (qvAddress: string, isAddress: boolean,
         return res;
     }
 
-    return { loadingDecision: loading }
+    return { loadingDecision: loading, checkedDecision: checked }
 }

@@ -133,9 +133,9 @@ export function Voter({ d, setDecision }:
                 }
                 {d.creditsRemaining == 0 && d.credits != 0 &&
                     <Box align="center" gap="small">
-                        <Button disabled={loading} label={"Submit Vote"} onClick={onSubmitVote} />
                         {success != "" &&
                             <Text color="status-ok">{success}</Text>}
+                        <Button disabled={loading} label={"Submit Vote"} onClick={onSubmitVote} />
                     </Box>
                 }
             </Box>

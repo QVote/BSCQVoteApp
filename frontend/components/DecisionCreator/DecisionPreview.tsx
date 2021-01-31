@@ -20,7 +20,7 @@ export function DecisionPreview({ d, r, onDeleteOption, onClickOption }:
     const dec = d ? d : r;
     return (
         <Box flex round="small" pad="medium" gap="small">
-            <Box gap="small" height={{ min: "160px" }}>
+            <Box gap="small" height={{ min: "190px" }}>
                 <Disp t={"Name:"} toDisp={dec.name} />
                 <Disp t={"Details:"} toDisp={dec.description} />
                 {dec.endTime && <Disp t={"EndTime:"} toDisp={formatMilisecondsToDateString(dec.endTime)} />}

@@ -7,6 +7,7 @@ import { useDecisionFromBlockchain } from './useDecisionFromBlockchain';
 
 export const useResults = (qvAddress: string, isAddress: boolean, eth: any, voterAddress: string, setResults: (a: QVBSC.ResultDecision) => any) => {
     const [loading, setLoading] = useState(false);
+    const [checked, setChecked] = useState(false);
     const [d, setD] = useState<QVBSC.VotingDecision>()
     useDecisionFromBlockchain(qvAddress, isAddress, eth, voterAddress, setD)
 
@@ -31,6 +32,7 @@ export const useResults = (qvAddress: string, isAddress: boolean, eth: any, vote
             }
             setLoading(false);
         }
+        setChecked(true)
     }
 
     function processResults(res: [string[], any[]], d: QVBSC.VotingDecision) {
@@ -48,5 +50,5 @@ export const useResults = (qvAddress: string, isAddress: boolean, eth: any, vote
         return { ...d, options: resOptions }
     }
 
-    return { loadingDecision: loading }
+    return { loadingDecision: loading, checkedDecision: checked }
 }

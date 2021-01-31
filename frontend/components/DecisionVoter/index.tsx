@@ -9,12 +9,13 @@ import { useDecisionFromBlockchain } from '../../hooks/useDecisionFromBlockchain
 export function DecisionVoter() {
     const [decision, setDecision] = useState<QVBSC.VotingDecision | undefined>();
     const g = useContext(GlobalContext);
-    useDecisionFromBlockchain(g.qvoteAddress, g.isAddress, g.eth, g.accounts[0], setDecision)
+    const { checkedDecision } = useDecisionFromBlockchain(g.qvoteAddress, g.isAddress, g.eth, g.accounts[0], setDecision)
 
     return (
         decision ?
             <Voter d={decision} setDecision={setDecision} />
             :
+            checkedDecision || !g.isAddress &&
             <Text>{"Put your QVote contract address above"}</Text>
     )
 }
