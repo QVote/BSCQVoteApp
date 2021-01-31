@@ -1,10 +1,13 @@
 import { QVBSC } from "../../types";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Box, TextInput, TextArea, Button, Keyboard, Stack } from 'grommet';
 import { DecisionPreview } from './DecisionPreview';
 import { v4 as uuidv4 } from 'uuid';
 import { DateTimeDrop } from '../DateTimeDrop'
 import { decisionValidate } from './script'
+import { ContractFactory, ethers } from 'ethers'
+import { abi, bytecode } from '../../config';
+import { GlobalContext } from '../GlobalContext'
 
 export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision }) {
     const [decision, setDecision] = useState(initDecision);
@@ -12,6 +15,7 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
     const [tempOption, setTempOption] = useState("");
     const [decisionValid, setDecisionValid] = useState(decisionValidate(initDecision))
     const [loading, setLoading] = useState(false);
+    const g = useContext(GlobalContext);
 
     const canAddOption = () => tempOption != "";
 
@@ -77,6 +81,28 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
             } catch (e) {
 
             }
+        }
+    }
+
+    async function deploy(company: string, election: string, options: string[], expirationMin: number) {
+        // Create an instance of a Contract Factory
+        const factory = new ContractFactory(abi, bytecode, signer);
+
+        try {
+            const contract = await factory.deploy(
+                company,
+                election,
+                options.map(ethers.utils.formatBytes32String),
+                expirationMin);
+
+            let address = contract.address
+
+            console.log(address);
+            console.log(contract.deployTransaction.hash);
+
+            contract.deployTransaction.wait()
+        } catch (error) {
+            console.log(error)
         }
     }
 
