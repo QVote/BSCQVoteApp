@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ethers } from 'ethers'
 
 
 function concatStrings(name: string, desc: string) {
@@ -27,4 +28,8 @@ function uniqStringToString(concat: string) {
     return [mark, splitted[1]]
 }
 
-export { concatStrings, unConcatStrings, makeStringUniq, uniqStringToString }
+function getNumberFromBigNum(n: ethers.BigNumber) {
+    return parseInt(ethers.BigNumber.from(n).toString())
+}
+
+export { concatStrings, unConcatStrings, makeStringUniq, uniqStringToString, getNumberFromBigNum }

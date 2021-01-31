@@ -17,7 +17,6 @@ export module QVBSC {
         creditsRemaining: number,
         description: string,
         options: SliderState[],
-        endTime: number,
         credits: number
     }
 
@@ -26,5 +25,17 @@ export module QVBSC {
         description: string,
         options: Option[],
         endTime: number
+    }
+
+    export type ResultOption = {
+        optName: string,
+        uid: string,
+        votes: number
+    }
+
+    export type ResultDecision = {
+        name: string,
+        description: string,
+        options: ResultOption[],
     }
 }

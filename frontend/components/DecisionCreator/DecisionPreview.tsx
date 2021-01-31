@@ -15,20 +15,23 @@ function Disp({ t, toDisp }: { t: string, toDisp: string }) {
     )
 }
 
-export function DecisionPreview({ d, onDeleteOption, onClickOption }:
-    { d: QVBSC.Decision, onDeleteOption?: (o: QVBSC.Option) => void, onClickOption?: (o: QVBSC.Option) => any }) {
+export function DecisionPreview({ d, r, onDeleteOption, onClickOption }:
+    { d?: QVBSC.Decision, r?: QVBSC.ResultDecision, onDeleteOption?: (o: QVBSC.Option) => void, onClickOption?: (o: QVBSC.Option) => any }) {
+    const dec = d ? d : r;
     return (
         <Box flex elevation="small" round="small" pad="medium" gap="small">
-            <Disp t={"Name:"} toDisp={d.name} />
-            <Disp t={"Details:"} toDisp={d.description} />
-            <Disp t={"EndTime:"} toDisp={formatMilisecondsToDateString(d.endTime)} />
-            <Box overflow={{ vertical: "auto" }} height={{ max: "medium" }}>
+            <Box gap="small" height={{ min: "160px" }}>
+                <Disp t={"Name:"} toDisp={dec.name} />
+                <Disp t={"Details:"} toDisp={dec.description} />
+                {dec.endTime && <Disp t={"EndTime:"} toDisp={formatMilisecondsToDateString(dec.endTime)} />}
                 {
-                    d.options.length != 0 &&
+                    dec.options.length != 0 &&
                     <Text weight="bold">{`Options:`}</Text>
                 }
+            </Box>
+            <Box overflow={{ vertical: "auto" }} height={{ max: "large" }} elevation={dec.options.length == 0 ? "none" : "small"} pad="medium" round="small">
                 {
-                    d.options.map((o) => {
+                    dec.options.map((o) => {
                         return (
                             <Box
                                 key={o.uid}
@@ -38,7 +41,8 @@ export function DecisionPreview({ d, onDeleteOption, onClickOption }:
                                 height={{ min: "xsmall" }}
                             >
                                 <Text wordBreak="break-all">
-                                    {o.optName}
+                                    {o.optName}<br />
+                                    {o.votes && (o.votes / 100 + " votes")}
                                 </Text>
                                 {
                                     onDeleteOption &&
