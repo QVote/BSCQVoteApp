@@ -104,37 +104,41 @@ export function Voter({ d, setDecision }:
 
 
     return (
-        <Box gap="small">
-            <CreditsLeft left={d.creditsRemaining}
-                max={d.credits} />
-            {
-                d.options.map(o => {
-                    return (
-                        <PosWithMeters
-                            key={o.uid}
-                            optName={o.optName}
-                            onClick={() => onClickOption(o)}
-                            credits={intPls(o.cur)}
-                            maxCredits={d.credits}
-                        />)
-                })}
-            {
-                showSlider && (
-                    <SliderModal
-                        sliderState={sliderState}
-                        setSlider={setSlider}
-                        onClickOutside={(() => setShowSlider(false))}
-                        globalMax={d.credits}
-                    />
-                )
-            }
-            {d.creditsRemaining == 0 && d.credits != 0 &&
-                <Box align="center" gap="small">
-                    <Button disabled={loading} label={"Submit Vote"} onClick={onSubmitVote} />
-                    {success != "" &&
-                        <Text color="status-ok">{success}</Text>}
-                </Box>
-            }
+        <Box fill gap="large">
+            <Box height={{ min: "xsmall" }}>
+                <CreditsLeft left={d.creditsRemaining}
+                    max={d.credits} />
+            </Box>
+            <Box overflow={{ vertical: "auto" }} height={{ max: "large" }} gap="medium" pad="small">
+                {
+                    d.options.map(o => {
+                        return (
+                            <PosWithMeters
+                                key={o.uid}
+                                optName={o.optName}
+                                onClick={() => onClickOption(o)}
+                                credits={intPls(o.cur)}
+                                maxCredits={d.credits}
+                            />)
+                    })}
+                {
+                    showSlider && (
+                        <SliderModal
+                            sliderState={sliderState}
+                            setSlider={setSlider}
+                            onClickOutside={(() => setShowSlider(false))}
+                            globalMax={d.credits}
+                        />
+                    )
+                }
+                {d.creditsRemaining == 0 && d.credits != 0 &&
+                    <Box align="center" gap="small">
+                        <Button disabled={loading} label={"Submit Vote"} onClick={onSubmitVote} />
+                        {success != "" &&
+                            <Text color="status-ok">{success}</Text>}
+                    </Box>
+                }
+            </Box>
         </Box>
     )
 }
