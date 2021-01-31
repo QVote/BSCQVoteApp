@@ -1,10 +1,13 @@
 import { QVBSC } from "../../types";
-import { Box, Button, Heading } from 'grommet';
+import { Box, Button, Heading, Text } from 'grommet';
 import { SliderModal } from './SliderModal';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { intPls } from './utill'
 import PosWithMeters from './PosWithMeters'
 import Meters from './Meters'
+import { ethers, Contract } from 'ethers';
+import { abi } from '../../config';
+import { GlobalContext } from '../GlobalContext';
 
 function CreditsLeft({ left, max }) {
     return (
@@ -33,6 +36,8 @@ export function Voter({ d, setDecision }:
     const [showSlider, setShowSlider] = useState(false);
     const [sliderState, setSliderState] = useState<QVBSC.SliderState>({ min: 0, max: 0, cur: 0, optName: "", uid: "" })
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState('');
+    const g = useContext(GlobalContext)
 
     //return number of credits used
     function getUsed(ds: QVBSC.VotingDecision) {
@@ -81,8 +86,17 @@ export function Voter({ d, setDecision }:
     async function onSubmitVote() {
         try {
             setLoading(true);
-
-            setLoading(false);
+            const provider = new ethers.providers.Web3Provider(g.eth.current)
+            const qvote = new Contract(g.qvoteAddress, abi, provider.getSigner());
+            const options = d.options.map(s => `${s.uid}${s.optName}`).map(ethers.utils.formatBytes32String);
+            const credits = d.options.map(s => s.cur);
+            const res = await qvote.vote(options, credits);
+            console.log({ res })
+            const res2 = await res.wait()
+            console.log({ res2 })
+            if (res2.status == 1) {
+                setSuccess("Success!");
+            }
         } catch (e) {
             setLoading(false);
         }
@@ -115,8 +129,10 @@ export function Voter({ d, setDecision }:
                 )
             }
             {d.creditsRemaining == 0 && d.credits != 0 &&
-                <Box align="center">
+                <Box align="center" gap="small">
                     <Button disabled={loading} label={"Submit Vote"} onClick={onSubmitVote} />
+                    {success != "" &&
+                        <Text color="status-ok">{success}</Text>}
                 </Box>
             }
         </Box>
