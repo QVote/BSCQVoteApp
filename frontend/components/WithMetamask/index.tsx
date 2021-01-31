@@ -11,7 +11,7 @@ export function WithMetamask({ children }: { children: React.ReactNode }) {
     return (
         <Box align="center" fill pad="medium" gap="medium">
             <Box onClick={() => router.push('/')}>
-                <Heading margin="none">{"QVote"}</Heading>
+                <Heading margin="none">{"QVote x  Binance Smart Chain"}</Heading>
             </Box>
 
             {
