@@ -15,7 +15,7 @@ export const ConnectToWallet = ({ eth, children }:
         walletErrorCode == _config.ERRORS.WRONG_CHAIN ?
             <ChainGuide />
             :
-            <Box gap="medium">
+            <Box gap="medium" fill>
                 {isWalletConnected ?
                     <ConnectedInterface accounts={accounts} eth={eth} children={children} />
                     :

@@ -2,22 +2,22 @@ import { Text, Button, Box } from 'grommet'
 import { useRouter } from 'next/router'
 
 export default function Index() {
-
     return (
-        <Box gap="small">
-            <Text>{"This is the actual app"}</Text>
-            <Box direction="row" gap="small">
-                <RouteButton label={"Create"} route={"/create"} />
-                <RouteButton label={"Vote"} route={"/vote"} />
-                <RouteButton label={"View Results"} route={"/results"} />
-            </Box>
-        </Box>
+        <Box gap="small" width={{ min: "medium" }} pad="medium" animation={[
+            { type: "fadeIn", duration: 1000 },
+            { type: "slideRight", duration: 1000 },
+        ]}>
 
+            <RouteButton label={"Create"} route={"/create"} align="start" />
+            <RouteButton label={"Mint Votes"} route={"/mint"} align="end" />
+            <RouteButton label={"Vote"} route={"/vote"} align="start" />
+            <RouteButton label={"View Results"} route={"/results"} align="end" />
+        </Box>
     )
 }
 
-function RouteButton({ label, route }:
-    { label: string, route: string }) {
+function RouteButton({ label, route, align }:
+    { label: string, route: string, align: string }) {
     const router = useRouter();
 
     function onRoute() {
@@ -25,7 +25,7 @@ function RouteButton({ label, route }:
     }
 
     return (
-        <Box align="center">
+        <Box align={"start"}>
             <Button label={label} onClick={onRoute} />
         </Box>
     )

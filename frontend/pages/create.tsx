@@ -1,7 +1,9 @@
-import { Text } from 'grommet'
+import { DecisionCreator } from '../components/DecisionCreator';
+import { getInitDecision } from '../components/DecisionCreator/script'
+
 
 export default function Create() {
     return (
-        <Text>{"Create"}</Text>
+        <DecisionCreator initDecision={getInitDecision()} />
     )
 }

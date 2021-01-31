@@ -17,21 +17,21 @@ const testClaimer = new Wallet("be1d0bf52c3f6ce29f13674b26dbaf143ad87629700ae220
 const claimerArbFaucet = new Contract(contractAddress, abi, testClaimer);
 
 const addToken = async (address: string) => {
-  const res = await arbFaucet.addToken(address)
-  const rec = await res.wait()
-  console.log('rec');
+    const res = await arbFaucet.addToken(address)
+    const rec = await res.wait()
+    console.log('rec');
 }
 
 const testClaim = async () => {
-  const res = await claimerArbFaucet.claim()
-  const rec = await res.wait()
-  console.log(rec);
+    const res = await claimerArbFaucet.claim()
+    const rec = await res.wait()
+    console.log(rec);
 
 }
 
 (async () => {
-  const res = await bscProvider.getBalance(contractAddress)
-  console.log("Faucet Eth Balance", res.toString());
+    const res = await bscProvider.getBalance(contractAddress)
+    console.log("Faucet Eth Balance", res.toString());
 
 
 })()
