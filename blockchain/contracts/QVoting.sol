@@ -97,7 +97,6 @@ contract QVoting is Ownable {
     function getResults()
         public
         view
-        onlyOwner
         returns (bytes32[] memory, int256[] memory)
     {
         int256[] memory voteArray = new int256[](optionTitles.length);
@@ -110,7 +109,6 @@ contract QVoting is Ownable {
     function getBalanceOf(address voterAddress)
         public
         view
-        onlyOwner
         returns (uint256)
     {
         return _balances[voterAddress];
