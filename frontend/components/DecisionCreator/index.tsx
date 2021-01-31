@@ -1,6 +1,6 @@
 import { QVBSC } from "../../types";
 import { useState, useContext } from 'react';
-import { Box, TextInput, TextArea, Button, Keyboard, Stack } from 'grommet';
+import { Box, TextInput, TextArea, Button, Keyboard, Text } from 'grommet';
 import { DecisionPreview } from './DecisionPreview';
 import { v4 as uuidv4 } from 'uuid';
 import { DateTimeDrop } from '../DateTimeDrop'
@@ -8,6 +8,8 @@ import { decisionValidate } from './script'
 import { ContractFactory, ethers } from 'ethers'
 import { abi, bytecode } from '../../config';
 import { GlobalContext } from '../GlobalContext'
+import { concatStrings, makeStringUniq, uniqStringToString } from '../../scripts'
+import { CopyOnly } from '../WithMetamask/CopyOnly';
 
 export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision }) {
     const [decision, setDecision] = useState(initDecision);
@@ -15,6 +17,10 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
     const [tempOption, setTempOption] = useState("");
     const [decisionValid, setDecisionValid] = useState(decisionValidate(initDecision))
     const [loading, setLoading] = useState(false);
+    const [deployingToTxt, setDeployingToTxt] = useState("");
+    const [success, setSuccess] = useState<[string, string]>(["", ""]);
+    const [errTxt, setErrTxt] = useState("");
+    const [isDeploying, setIsDeploying] = useState(false);
     const g = useContext(GlobalContext);
 
     const canAddOption = () => tempOption != "";
@@ -78,83 +84,118 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
         if (!loading && decisionValid) {
             try {
                 setLoading(true);
-                // do blockchain stuff
+                setSuccess(["", ""]);
+                setDeployingToTxt("");
+                setErrTxt("");
+                const provider = new ethers.providers.Web3Provider(g.eth.current)
+                const factory = new ContractFactory(abi, bytecode, provider.getSigner());
+                const payload: [string, string, string[], number] = [
+                    "QVote",
+                    concatStrings(decision.name, decision.description),
+                    decision.options.map(o => {
+                        const uniqOption = makeStringUniq(o.optName);
+                        return ethers.utils.formatBytes32String(uniqOption)
+                    }),
+                    Math.round(decision.endTime / (1000 * 60))
+                ]
+                const contract = await factory.deploy(...payload);
+                setIsDeploying(true);
+                setDeployingToTxt(`Deploying to: ${contract.address} ...`);
+                const receipt = await contract.deployTransaction.wait();
+                if (receipt.status == 1) {
+                    setSuccess(["Success! QVote address:", contract.address])
+                    g.setQvoteAddress(contract.address)
+                }
                 setLoading(false);
             } catch (e) {
                 setLoading(false);
+                setErrTxt(e.message);
             }
         }
     }
 
-    async function deploy(company: string, election: string, options: string[], expirationMin: number) {
-        // Create an instance of a Contract Factory
-        const factory = new ContractFactory(abi, bytecode, signer);
-
-        try {
-            const contract = await factory.deploy(
-                company,
-                election,
-                options.map(ethers.utils.formatBytes32String),
-                expirationMin);
-
-            let address = contract.address
-
-            console.log(address);
-            console.log(contract.deployTransaction.hash);
-
-            contract.deployTransaction.wait()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     return (
-        <Box fill direction="row" gap="large">
-            <DecisionPreview d={decision} onDeleteOption={onDeleteOption} />
-            <Box flex elevation="small" round="small" pad="medium" gap="small">
-                <TextInput
-                    placeholder="Name"
-                    value={decision.name}
-                    maxLength={100}
-                    onChange={(e) => onChangeName(e.target.value)}
-                />
-                <TextArea
-                    placeholder="Details"
-                    value={decision.description}
-                    resize="vertical"
-                    maxLength={100}
-                    onChange={(e) => onChangeDescription(e.target.value)}
-                />
-                <DateTimeDrop
-                    placeholder="End time"
-                    dt={getDateTime(decision.endTime)}
-                    onChange={(v) => onChangeEndTime(v)}
-                />
-                <Keyboard onEnter={onAddNewOption}>
-                    <Box align="start">
-                        {
-                            isAddOption ?
-                                <Box fill gap="small">
-                                    <TextInput
-                                        placeholder="Option Name"
-                                        value={tempOption}
-                                        onChange={(e) => setTempOption(e.target.value)}
-                                        maxLength={100}
-                                    />
-                                    <Box align="start">
-                                        <Button disabled={!canAddOption()} label={"Confirm"} onClick={onAddNewOption} />
+        !isDeploying ?
+            <Box fill direction="row" gap="large">
+                <DecisionPreview d={decision} onDeleteOption={onDeleteOption} />
+                <Box flex elevation="small" round="small" pad="medium" gap="small">
+                    <TextInput
+                        placeholder="Name"
+                        value={decision.name}
+                        maxLength={100}
+                        onChange={(e) => onChangeName(e.target.value)}
+                    />
+                    <TextArea
+                        placeholder="Details"
+                        value={decision.description}
+                        resize="vertical"
+                        maxLength={100}
+                        onChange={(e) => onChangeDescription(e.target.value)}
+                    />
+                    <DateTimeDrop
+                        placeholder="End time"
+                        dt={getDateTime(decision.endTime)}
+                        onChange={(v) => onChangeEndTime(v)}
+                    />
+                    <Keyboard onEnter={onAddNewOption}>
+                        <Box align="start">
+                            {
+                                isAddOption ?
+                                    <Box fill gap="small">
+                                        <TextInput
+                                            placeholder="Option Name"
+                                            value={tempOption}
+                                            onChange={(e) => setTempOption(e.target.value)}
+                                            maxLength={26}
+                                        />
+                                        <Box align="start">
+                                            <Button disabled={!canAddOption()} label={"Confirm"} onClick={onAddNewOption} />
+                                        </Box>
                                     </Box>
-                                </Box>
-                                :
-                                <Button label={"Add option"} onClick={() => setIsAddOption(true)} />
-                        }
+                                    :
+                                    <Button label={"Add option"} onClick={() => setIsAddOption(true)} />
+                            }
+                        </Box>
+                    </Keyboard>
+                    <Box align="start">
+                        <Button
+                            disabled={loading || !decisionValid} label={"Deploy"} onClick={onDeploy} />
                     </Box>
-                </Keyboard>
-                <Box align="start">
-                    <Button
-                        disabled={loading || !decisionValid} label={"Deploy"} onClick={onDeploy} />
+                </Box>
+            </Box >
+            :
+            <Box fill direction="row" gap="large">
+                <Box flex elevation="small" round="small" pad="medium" gap="large">
+                    {deployingToTxt != "" &&
+                        <Box>
+                            <Text color="status-warning" wordBreak="break-all">
+                                {deployingToTxt}
+                            </Text>
+                        </Box>
+                    }
+                    {success[0] != "" &&
+                        <Box>
+                            <CopyOnly arr={[success]} />
+                        </Box>
+                    }
+                    {errTxt != "" &&
+                        <Box>
+                            <Text truncate={true} color={"status-error"}>
+                                {errTxt}
+                            </Text>
+                        </Box>
+                    }
+                    {
+                        success[0] != "" &&
+                        <Box align="center">
+                            <Button
+                                label={"Deploy another?"} onClick={() => {
+                                    setIsDeploying(false);
+                                    setDecision(initDecision)
+                                }} />
+                        </Box>
+                    }
                 </Box>
             </Box>
-        </Box>
     )
 }

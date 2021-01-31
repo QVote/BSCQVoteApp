@@ -2,12 +2,7 @@ import { Box, TextInput } from 'grommet';
 import { ethers } from 'ethers';
 import { Checkmark, Close } from 'grommet-icons';
 
-export function WithQVoteContractAddress({ qvoteAddress, setQvoteAddress, isAddress, setIsAddress }) {
-
-    function onUpdateAddress(s: string) {
-        setIsAddress(ethers.utils.isAddress(s))
-        setQvoteAddress(s);
-    }
+export function WithQVoteContractAddress({ qvoteAddress, onUpdateAddress, isAddress}) {
 
     return (
         <Box align="center" width={{min:"medium"}}>

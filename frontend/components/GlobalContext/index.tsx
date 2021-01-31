@@ -1,7 +1,7 @@
 import { GlobalContext } from "./GlobalContext";
 import { MutableRefObject } from 'react';
 
-const Context = ({ children, eth, accounts, qvoteAddress, isAddress, isQVContract }:
+const Context = ({ children, eth, accounts, qvoteAddress, isAddress, isQVContract, setQvoteAddress }:
     {
         children: React.ReactNode,
         eth: MutableRefObject<any>,
@@ -9,6 +9,7 @@ const Context = ({ children, eth, accounts, qvoteAddress, isAddress, isQVContrac
         qvoteAddress: string,
         isAddress: boolean,
         isQVContract: boolean,
+        setQvoteAddress: (arg: string) => any
     }) => {
     return (
         <GlobalContext.Provider value={{
@@ -16,7 +17,8 @@ const Context = ({ children, eth, accounts, qvoteAddress, isAddress, isQVContrac
             accounts,
             qvoteAddress,
             isAddress,
-            isQVContract
+            isQVContract,
+            setQvoteAddress
         }}>
             {children}
         </GlobalContext.Provider>
