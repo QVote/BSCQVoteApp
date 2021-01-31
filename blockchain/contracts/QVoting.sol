@@ -116,6 +116,17 @@ contract QVoting is Ownable {
         return _balances[voterAddress];
     }
 
+	function getVotingInfo(address voterAddress) 
+		public 
+		view 
+		returns(string memory, string memory, bytes32[] memory)
+	{
+		require(
+			_balances[voterAddress] > 0
+        );
+		return (company, name, optionTitles); 
+	}
+
     /**
      * @dev returns the square root (in int) of a number
      * to get better precision, the results returned are multiplied by sqrt('precision')
@@ -135,4 +146,5 @@ contract QVoting is Ownable {
             z = (x / z + z) / 2;
         }
     }
+
 }
