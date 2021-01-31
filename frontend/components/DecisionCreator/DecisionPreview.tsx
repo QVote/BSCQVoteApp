@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { QVBSC } from "../../types";
 import { Text, Box, Button } from 'grommet'
 import { Trash, FormEdit } from 'grommet-icons'

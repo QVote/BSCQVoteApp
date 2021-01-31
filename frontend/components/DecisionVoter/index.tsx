@@ -15,7 +15,9 @@ export function DecisionVoter() {
         decision ?
             <Voter d={decision} setDecision={setDecision} />
             :
-            checkedDecision || !g.isAddress &&
-            <Text>{"Put your QVote contract address above"}</Text>
+            checkedDecision || !g.isAddress ?
+                <Text>{"Put your QVote contract address above"}</Text>
+                :
+                null
     )
 }
