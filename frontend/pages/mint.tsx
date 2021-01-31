@@ -41,7 +41,11 @@ export default function Mint() {
     }
 
     return (
-        <Box align="center" width={{min:"530px"}} gap="small" >
+        <Box align="center" width={{ min: "530px" }} gap="small"
+            animation={[
+                { type: "fadeIn", duration: 1000 },
+                { type: "slideLeft", duration: 1000 },
+            ]}>
             <TextInput
                 icon={isAddress ? <Checkmark /> : <Close />}
                 placeholder="Voter address"

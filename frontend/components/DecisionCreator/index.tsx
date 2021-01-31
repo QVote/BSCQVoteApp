@@ -116,9 +116,13 @@ export function DecisionCreator({ initDecision }: { initDecision: QVBSC.Decision
 
     return (
         !isDeploying ?
-            <Box fill direction="row" gap="large">
+            <Box fill direction="row" gap="large"
+                animation={[
+                    { type: "fadeIn", duration: 1000 },
+                    { type: "slideLeft", duration: 1000 },
+                ]}>
                 <DecisionPreview d={decision} onDeleteOption={onDeleteOption} />
-                <Box flex  round="small" pad="medium" gap="small">
+                <Box flex round="small" pad="medium" gap="small">
                     <TextInput
                         placeholder="Name"
                         value={decision.name}

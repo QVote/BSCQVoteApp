@@ -3,7 +3,10 @@ import { useRouter } from 'next/router'
 
 export default function Index() {
     return (
-        <Box gap="small" width={{ min: "medium" }} pad="medium">
+        <Box gap="small" width={{ min: "medium" }} pad="medium" animation={[
+            { type: "fadeIn", duration: 1000 },
+            { type: "slideRight", duration: 1000 },
+        ]}>
 
             <RouteButton label={"Create"} route={"/create"} align="start" />
             <RouteButton label={"Mint Votes"} route={"/mint"} align="end" />

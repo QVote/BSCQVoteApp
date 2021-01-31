@@ -13,7 +13,8 @@ function CreditsLeft({ left, max }) {
     return (
         <>
             <Box height={{ min: "20px", max: "100px" }}
-                align="center" pad={{ bottom: "medium" }}>
+                align="center" pad={{ bottom: "medium" }}
+            >
                 <Heading
                     responsive={false}
                     textAlign="center"
@@ -104,7 +105,10 @@ export function Voter({ d, setDecision }:
 
 
     return (
-        <Box fill gap="large">
+        <Box fill gap="large" animation={[
+            { type: "fadeIn", duration: 1000 },
+            { type: "slideLeft", duration: 1000 },
+        ]}>
             <Box height={{ min: "xsmall" }}>
                 <CreditsLeft left={d.creditsRemaining}
                     max={d.credits} />

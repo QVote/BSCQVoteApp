@@ -11,7 +11,11 @@ export default function Results() {
     const { checkedDecision } = useResults(g.qvoteAddress, g.isAddress, g.eth, g.accounts[0], setResults);
 
     return (
-        <Box fill direction="row" gap="large" pad="medium">
+        <Box fill direction="row" gap="large" pad="medium"
+            animation={[
+                { type: "fadeIn", duration: 1000 },
+                { type: "slideLeft", duration: 1000 },
+            ]}>
             { typeof results != "undefined" ?
                 <DecisionPreview r={results} />
                 :
