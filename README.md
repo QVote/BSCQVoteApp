@@ -3,8 +3,6 @@
 ## What am I 
 QVote is a quadratic voting platform on blockchain. This repo contains QVote's implementation on the Binance Smart Chain.  :technologist: 
 
-check it out https://bsc.qvote.uk/
-
 ## How to use the app
 The app works with the metamask wallet. You need a funded account in the Binance Smart Chain network
 You can create a decision in the 'Create' section. The decision gets deployed to the Binance Smart Chain as a smart contract. Save it's address and give it to the voters to vote. 
